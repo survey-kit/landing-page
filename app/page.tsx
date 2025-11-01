@@ -5,7 +5,7 @@ import { ArrowRight, Github } from "lucide-react"
 export default function Home() {
   return (
     <main className="bg-background min-h-screen">
-      <div className="container mx-auto px-4 py-16 md:py-24">
+      <div className="container mx-auto p-4 min-h-screen flex items-center justify-center">
         <div className="mx-auto max-w-3xl space-y-12 text-center">
           {/* Logo and Title */}
           <div className="space-y-6">

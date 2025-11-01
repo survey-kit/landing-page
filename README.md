@@ -1,36 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Survey Kit Landing Page
+
+A modern, mobile-first landing page for Survey Kit - an accessible survey framework designed for conversational user experiences.
+
+## Overview
+
+Survey Kit is a mobile-first, accessible survey framework that prioritises user experience through conversational interfaces. This landing page showcases the framework's capabilities whilst maintaining the same design principles: accessibility, mobile-first design, and developer-friendly implementation.
+
+## Features
+
+- **Mobile-First Design**: Optimised for mobile devices with responsive layouts
+- **Fully Accessible**: WCAG 2.2 AA compliant with comprehensive screen reader support
+- **Modern Tech Stack**: Built with Next.js 16, React 19, and TypeScript
+- **Beautiful UI**: Styled with Tailwind CSS and shadcn/ui components
+- **Developer Experience**: ESLint + Prettier configuration for code quality
+- **Analytics Ready**: Integrated with Vercel Analytics for performance monitoring
+- **Fast Performance**: Optimised for Core Web Vitals and loading speed
+
+## Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) with App Router
+- **Library**: [React 19](https://reactjs.org/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Code Quality**: ESLint + Prettier
+- **Deployment**: [Vercel](https://vercel.com/)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18.18 or later
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/survey-kit/landing-page.git
+   cd landing-page
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Run the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint checks
+- `npm run lint:fix` - Fix ESLint issues automatically
+- `npm run format` - Format code with Prettier
+
+### Code Quality
+
+This project maintains high code quality standards:
+
+- **ESLint**: Configured with Next.js and TypeScript rules
+- **Prettier**: Automatic code formatting with Tailwind CSS class sorting
+- **TypeScript**: Full type safety throughout the application
+- **Accessibility**: Built-in accessibility best practices
+
+### Project Structure
+
+```
+├── app/                    # Next.js App Router pages
+│   ├── globals.css        # Global styles
+│   ├── layout.tsx         # Root layout component
+│   └── page.tsx           # Homepage component
+├── components/            # Reusable UI components
+│   └── ui/               # shadcn/ui components
+├── lib/                  # Utility functions
+├── public/               # Static assets
+├── .prettierrc           # Prettier configuration
+├── eslint.config.mjs     # ESLint configuration
+├── next.config.ts        # Next.js configuration
+├── tailwind.config.ts    # Tailwind CSS configuration
+└── tsconfig.json         # TypeScript configuration
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Vercel (Recommended)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push your code to GitHub
+2. Connect your repository to [Vercel](https://vercel.com)
+3. Vercel will automatically build and deploy your application
 
-## Learn More
+### Manual Deployment
 
-To learn more about Next.js, take a look at the following resources:
+1. Build the application:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   npm run build
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Start the production server:
+   ```bash
+   npm run start
+   ```
 
-## Deploy on Vercel
+### Content
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Update `app/page.tsx` for main content
+- Modify `app/layout.tsx` for metadata and SEO
+- Replace `public/logo.png` with your own logo
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Links
+
+- **Survey Kit Framework**: [GitHub Organisation](https://github.com/survey-kit)
+
+## Support
+
+For questions about the Survey Kit framework or this landing page:
+
+- Open an issue on GitHub
+- Contact the maintainers
+- Check the documentation (when available)

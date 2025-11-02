@@ -15,6 +15,7 @@ Survey Kit is a mobile-first, accessible survey framework that prioritises user 
 - **Developer Experience**: ESLint + Prettier configuration for code quality
 - **Analytics Ready**: Integrated with Vercel Analytics for performance monitoring
 - **Fast Performance**: Optimised for Core Web Vitals and loading speed
+- **Kanban Board**: Interactive project management board with drag-and-drop functionality, secured with GitHub OAuth authentication via Supabase
 
 ## Tech Stack
 
@@ -24,7 +25,9 @@ Survey Kit is a mobile-first, accessible survey framework that prioritises user 
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **Components**: [shadcn/ui](https://ui.shadcn.com/)
 - **Icons**: [Lucide React](https://lucide.dev/)
-- **Code Quality**: ESLint + Prettier
+- **Authentication**: [Supabase](https://supabase.com/) with GitHub OAuth
+- **Drag & Drop**: [@dnd-kit](https://dndkit.com/) for Kanban board interactions
+- **Code Quality**: ESLint 9 + Prettier
 - **Deployment**: [Vercel](https://vercel.com/)
 
 ## Getting Started
@@ -33,6 +36,8 @@ Survey Kit is a mobile-first, accessible survey framework that prioritises user 
 
 - Node.js 18.18 or later
 - npm, yarn, pnpm, or bun
+- Supabase account (for authentication and database)
+- GitHub OAuth app (for login functionality)
 
 ### Installation
 
@@ -49,24 +54,34 @@ Survey Kit is a mobile-first, accessible survey framework that prioritises user 
    npm install
    ```
 
-3. Run the development server:
+3. Set up environment variables:
+
+   Create a `.env.local` file with your Supabase credentials:
+
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+4. Run the development server:
 
    ```bash
    npm run dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. Open [http://localhost:3001](http://localhost:3001) in your browser
 
 ## Development
 
 ### Available Scripts
 
-- `npm run dev` - Start development server
+- `npm run dev` - Start development server (runs on port 3001)
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint checks
 - `npm run lint:fix` - Fix ESLint issues automatically
 - `npm run format` - Format code with Prettier
+- `npm run format:check` - Check code formatting
 
 ### Code Quality
 
@@ -80,19 +95,28 @@ This project maintains high code quality standards:
 ### Project Structure
 
 ```
-├── app/                    # Next.js App Router pages
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout component
-│   └── page.tsx           # Homepage component
-├── components/            # Reusable UI components
-│   └── ui/               # shadcn/ui components
-├── lib/                  # Utility functions
-├── public/               # Static assets
-├── .prettierrc           # Prettier configuration
-├── eslint.config.mjs     # ESLint configuration
-├── next.config.ts        # Next.js configuration
-├── tailwind.config.ts    # Tailwind CSS configuration
-└── tsconfig.json         # TypeScript configuration
+├── app/                      # Next.js App Router pages
+│   ├── api/                  # API routes
+│   │   ├── cards/           # Kanban card management endpoints
+│   │   └── auth/            # Authentication callbacks
+│   ├── globals.css          # Global styles
+│   ├── layout.tsx           # Root layout component
+│   └── page.tsx             # Homepage component
+├── components/              # Reusable UI components
+│   ├── kanban-board.tsx    # Main Kanban board component
+│   ├── kanban-card.tsx      # Individual card component
+│   ├── kanban-column.tsx    # Column component
+│   ├── login-dialog.tsx     # GitHub OAuth login
+│   └── ui/                  # shadcn/ui components
+├── lib/                     # Utility functions
+│   ├── auth.ts             # Authentication helpers
+│   └── supabase/           # Supabase client configuration
+├── scripts/                 # Database migration scripts
+├── public/                  # Static assets
+├── .prettierrc             # Prettier configuration
+├── eslint.config.mjs       # ESLint 9 flat config
+├── next.config.ts          # Next.js configuration
+└── tsconfig.json           # TypeScript configuration
 ```
 
 ## Deployment
@@ -116,11 +140,26 @@ This project maintains high code quality standards:
    npm run start
    ```
 
+### Kanban Board
+
+The project includes an interactive Kanban board accessible via GitHub authentication. The board allows authorised users to:
+
+- Create, edit, and delete cards across multiple columns
+- Drag and drop cards to reorder within columns or move between columns
+- Real-time updates via Supabase subscriptions
+
+Access control is enforced through:
+
+- GitHub OAuth authentication via Supabase
+- Row Level Security (RLS) policies at the database level
+- Server-side API route validation
+
 ### Content
 
 - Update `app/page.tsx` for main content
 - Modify `app/layout.tsx` for metadata and SEO
 - Replace `public/logo.png` with your own logo
+- Configure Kanban columns and permissions via Supabase dashboard
 
 ## Links
 

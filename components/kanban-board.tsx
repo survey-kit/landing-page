@@ -11,21 +11,47 @@ import {
   useSensors,
 } from "@dnd-kit/core"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
-import type { KanbanCard, KanbanColumn } from "@/types/kanban"
+import type { KanbanCard, KanbanColumn, KanbanSprint } from "@/types/kanban"
 import { KanbanColumnComponent } from "./kanban-column"
 import { useRouter } from "next/navigation"
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Plus, X } from "lucide-react"
 
 interface KanbanBoardProps {
   initialColumns: KanbanColumn[]
   initialCards: KanbanCard[]
+  initialSprints: KanbanSprint[]
   isAdmin: boolean
 }
 
-export function KanbanBoard({ initialColumns, initialCards, isAdmin }: KanbanBoardProps) {
+export function KanbanBoard({
+  initialColumns,
+  initialCards,
+  initialSprints,
+  isAdmin,
+}: KanbanBoardProps) {
   const [columns, setColumns] = useState(initialColumns)
   const [cards, setCards] = useState(initialCards)
+  const [sprints, setSprints] = useState(initialSprints)
+  const [selectedSprintId, setSelectedSprintId] = useState<string | null>(
+    initialSprints.find(s => s.is_active)?.id || initialSprints[0]?.id || null
+  )
   const [activeCard, setActiveCard] = useState<KanbanCard | null>(null)
   const [isMounted, setIsMounted] = useState(false)
+  const [isCreatingSprint, setIsCreatingSprint] = useState(false)
+  const [newSprintName, setNewSprintName] = useState("")
+  const [newSprintStartDate, setNewSprintStartDate] = useState("")
+  const [newSprintEndDate, setNewSprintEndDate] = useState("")
+  const [isEndingSprint, setIsEndingSprint] = useState(false)
   const router = useRouter()
   const supabase = getSupabaseBrowserClient()
 
@@ -45,10 +71,17 @@ export function KanbanBoard({ initialColumns, initialCards, isAdmin }: KanbanBoa
   // Fetch fresh data from database
   const fetchCards = useCallback(async () => {
     try {
-      const { data: updatedCards, error } = await supabase
-        .from("kanban_cards")
-        .select("*")
-        .order("position")
+      let query = supabase.from("kanban_cards").select("*").order("position")
+
+      // Filter by sprint if one is selected
+      if (selectedSprintId) {
+        query = query.eq("sprint_id", selectedSprintId)
+      } else {
+        // If no sprint selected, show cards without a sprint
+        query = query.is("sprint_id", null)
+      }
+
+      const { data: updatedCards, error } = await query
 
       if (!error && updatedCards) {
         setCards(updatedCards as KanbanCard[])
@@ -58,7 +91,7 @@ export function KanbanBoard({ initialColumns, initialCards, isAdmin }: KanbanBoa
     } catch (error) {
       console.error("Error fetching cards:", error)
     }
-  }, [supabase])
+  }, [supabase, selectedSprintId])
 
   const fetchColumns = useCallback(async () => {
     try {
@@ -77,9 +110,32 @@ export function KanbanBoard({ initialColumns, initialCards, isAdmin }: KanbanBoa
     }
   }, [supabase])
 
+  const fetchSprints = useCallback(async () => {
+    try {
+      const { data: updatedSprints, error } = await supabase
+        .from("kanban_sprints")
+        .select("*")
+        .order("created_at", { ascending: false })
+
+      if (!error && updatedSprints) {
+        const typedSprints = updatedSprints as KanbanSprint[]
+        setSprints(typedSprints)
+        // If current sprint is no longer available, select the active one or first one
+        if (selectedSprintId && !typedSprints.find(s => s.id === selectedSprintId)) {
+          const activeSprint = typedSprints.find(s => s.is_active) || typedSprints[0]
+          setSelectedSprintId(activeSprint?.id || null)
+        }
+      } else if (error) {
+        console.error("Error fetching sprints:", error)
+      }
+    } catch (error) {
+      console.error("Error fetching sprints:", error)
+    }
+  }, [supabase, selectedSprintId])
+
   const refreshData = useCallback(async () => {
-    await Promise.all([fetchCards(), fetchColumns()])
-  }, [fetchCards, fetchColumns])
+    await Promise.all([fetchCards(), fetchColumns(), fetchSprints()])
+  }, [fetchCards, fetchColumns, fetchSprints])
 
   useEffect(() => {
     // Subscribe to real-time changes
@@ -97,11 +153,24 @@ export function KanbanBoard({ initialColumns, initialCards, isAdmin }: KanbanBoa
       })
       .subscribe()
 
+    const sprintsChannel = supabase
+      .channel("kanban_sprints_changes")
+      .on("postgres_changes", { event: "*", schema: "public", table: "kanban_sprints" }, () => {
+        fetchSprints()
+      })
+      .subscribe()
+
     return () => {
       supabase.removeChannel(cardsChannel)
       supabase.removeChannel(columnsChannel)
+      supabase.removeChannel(sprintsChannel)
     }
-  }, [supabase, fetchCards, fetchColumns])
+  }, [supabase, fetchCards, fetchColumns, fetchSprints])
+
+  // Refetch cards when sprint changes
+  useEffect(() => {
+    fetchCards()
+  }, [selectedSprintId, fetchCards])
 
   const handleAddCard = async (columnId: string, title: string, description: string) => {
     try {
@@ -119,6 +188,7 @@ export function KanbanBoard({ initialColumns, initialCards, isAdmin }: KanbanBoa
           title,
           description,
           position: maxPosition,
+          sprint_id: selectedSprintId,
         }),
       })
 
@@ -297,23 +367,174 @@ export function KanbanBoard({ initialColumns, initialCards, isAdmin }: KanbanBoa
     }
   }
 
+  const handleCreateSprint = async () => {
+    if (!newSprintName.trim()) return
+
+    try {
+      const response = await fetch("/api/sprints", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: newSprintName,
+          start_date: newSprintStartDate || null,
+          end_date: newSprintEndDate || null,
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || "Failed to create sprint")
+      }
+
+      const newSprint = await response.json()
+      setNewSprintName("")
+      setNewSprintStartDate("")
+      setNewSprintEndDate("")
+      setIsCreatingSprint(false)
+      setSelectedSprintId(newSprint.id)
+      await refreshData()
+    } catch (error) {
+      console.error("Error creating sprint:", error)
+      alert(error instanceof Error ? error.message : "Failed to create sprint")
+    }
+  }
+
+  const handleEndSprint = async () => {
+    if (!selectedSprintId) return
+
+    const currentSprint = sprints.find(s => s.id === selectedSprintId)
+    if (!currentSprint?.is_active) {
+      alert("This sprint is already inactive")
+      return
+    }
+
+    if (!confirm(`Are you sure you want to end "${currentSprint.name}"?`)) {
+      return
+    }
+
+    try {
+      setIsEndingSprint(true)
+      const response = await fetch("/api/sprints", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: selectedSprintId,
+          is_active: false,
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || "Failed to end sprint")
+      }
+
+      // Switch to the next active sprint or first sprint
+      await refreshData()
+      const { data: updatedSprintsData } = await supabase
+        .from("kanban_sprints")
+        .select("*")
+        .order("created_at", { ascending: false })
+
+      if (updatedSprintsData) {
+        const typedSprints = updatedSprintsData as KanbanSprint[]
+        const activeSprint = typedSprints.find(s => s.is_active) || typedSprints[0]
+        setSelectedSprintId(activeSprint?.id || null)
+      }
+    } catch (error) {
+      console.error("Error ending sprint:", error)
+      alert(error instanceof Error ? error.message : "Failed to end sprint")
+    } finally {
+      setIsEndingSprint(false)
+    }
+  }
+
   const sortedColumns = [...columns].sort((a, b) => a.position - b.position)
+  const currentSprint = sprints.find(s => s.id === selectedSprintId)
 
   const boardContent = (
-    <div className="w-full overflow-x-auto">
-      <div className="flex">
-        {sortedColumns.map(column => (
-          <KanbanColumnComponent
-            key={column.id}
-            column={column}
-            cards={cards.filter(card => card.column_id === column.id)}
-            isAdmin={isAdmin}
-            onAddCard={handleAddCard}
-            onUpdateCard={handleUpdateCard}
-            onDeleteCard={handleDeleteCard}
-          />
-        ))}
+    <div className="w-full space-y-4">
+      <div className="w-full overflow-x-auto">
+        <div className="flex">
+          {sortedColumns.map(column => (
+            <KanbanColumnComponent
+              key={column.id}
+              column={column}
+              cards={cards.filter(card => card.column_id === column.id)}
+              isAdmin={isAdmin}
+              onAddCard={handleAddCard}
+              onUpdateCard={handleUpdateCard}
+              onDeleteCard={handleDeleteCard}
+            />
+          ))}
+        </div>
       </div>
+      <Dialog open={isCreatingSprint} onOpenChange={setIsCreatingSprint}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create New Sprint</DialogTitle>
+            <DialogDescription>
+              Create a new sprint. The current sprint will be automatically ended.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="sprint-name">Sprint Name</Label>
+              <Input
+                id="sprint-name"
+                value={newSprintName}
+                onChange={e => setNewSprintName(e.target.value)}
+                placeholder="e.g., Sprint 2"
+                onKeyDown={e => {
+                  if (e.key === "Enter" && newSprintName.trim()) {
+                    e.preventDefault()
+                    handleCreateSprint()
+                  }
+                }}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="sprint-start-date">Start Date (optional)</Label>
+                <Input
+                  id="sprint-start-date"
+                  type="date"
+                  value={newSprintStartDate}
+                  onChange={e => setNewSprintStartDate(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="sprint-end-date">End Date (optional)</Label>
+                <Input
+                  id="sprint-end-date"
+                  type="date"
+                  value={newSprintEndDate}
+                  onChange={e => setNewSprintEndDate(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex gap-2 justify-end">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setIsCreatingSprint(false)
+                  setNewSprintName("")
+                  setNewSprintStartDate("")
+                  setNewSprintEndDate("")
+                }}
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleCreateSprint} disabled={!newSprintName.trim()}>
+                Create Sprint
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 
@@ -324,7 +545,47 @@ export function KanbanBoard({ initialColumns, initialCards, isAdmin }: KanbanBoa
 
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      {boardContent}
+      <div className="flex items-center gap-4 pb-4 border-b border-gray-300">
+        <Label htmlFor="sprint-select" className="text-sm font-medium">
+          Sprint:
+        </Label>
+        <select
+          id="sprint-select"
+          value={selectedSprintId || ""}
+          onChange={e => setSelectedSprintId(e.target.value || null)}
+          className="h-9 rounded-md border border-input bg-secondary text-secondary-foreground px-3 py-1 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none"
+        >
+          {sprints.map(sprint => (
+            <option key={sprint.id} value={sprint.id}>
+              {sprint.name} {sprint.is_active && "(Active)"}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="border border-gray-300 bg-muted/40 rounded-[3px] ">{boardContent}</div>
+      {isAdmin && (
+        <div className="flex items-center gap-4 pt-4 border-t border-gray-300">
+          <Button
+            variant="outline"
+            onClick={() => setIsCreatingSprint(true)}
+            className="flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Create New Sprint
+          </Button>
+          {currentSprint?.is_active && (
+            <Button
+              variant="outline"
+              onClick={handleEndSprint}
+              disabled={isEndingSprint}
+              className="flex items-center gap-2"
+            >
+              <X className="w-4 h-4" />
+              {isEndingSprint ? "Ending..." : "End Current Sprint"}
+            </Button>
+          )}
+        </div>
+      )}
       <DragOverlay>
         {activeCard ? (
           <div className="p-4 bg-background border rounded-lg shadow-lg opacity-90 rotate-3">

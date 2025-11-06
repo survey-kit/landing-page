@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json()
-    const { column_id, title, description, position } = body
+    const { column_id, title, description, position, sprint_id } = body
 
     // Validate required fields
     if (!column_id || !title?.trim()) {
@@ -24,9 +24,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid column ID format" }, { status: 400 })
     }
 
-    // Validate and sanitize title length
-    const sanitizedTitle = title.trim()
-    if (sanitizedTitle.length === 0 || sanitizedTitle.length > 500) {
+    // Validate and sanitise title length
+    const sanitisedTitle = title.trim()
+    if (sanitisedTitle.length === 0 || sanitisedTitle.length > 500) {
       return NextResponse.json(
         { error: "Title must be between 1 and 500 characters" },
         { status: 400 }
@@ -58,9 +58,10 @@ export async function POST(request: Request) {
       .from("kanban_cards")
       .insert({
         column_id,
-        title: sanitizedTitle,
+        title: sanitisedTitle,
         description: description ? description.trim() : null,
         position: position ?? 0,
+        sprint_id: sprint_id || null,
       })
       .select()
       .single()
@@ -101,8 +102,8 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: "Invalid card ID format" }, { status: 400 })
     }
 
-    // Validate and sanitize inputs
-    let sanitizedTitle: string | undefined
+    // Validate and sanitise inputs
+    let sanitisedTitle: string | undefined
     if (title !== undefined) {
       const trimmed = title.trim()
       if (trimmed.length === 0 || trimmed.length > 500) {
@@ -111,10 +112,10 @@ export async function PATCH(request: Request) {
           { status: 400 }
         )
       }
-      sanitizedTitle = trimmed
+      sanitisedTitle = trimmed
     }
 
-    let sanitizedDescription: string | null | undefined
+    let sanitisedDescription: string | null | undefined
     if (description !== undefined) {
       const trimmed = description === null ? null : description.trim()
       if (trimmed !== null && trimmed.length > 2000) {
@@ -123,7 +124,7 @@ export async function PATCH(request: Request) {
           { status: 400 }
         )
       }
-      sanitizedDescription = trimmed
+      sanitisedDescription = trimmed
     }
 
     if (column_id !== undefined) {
@@ -153,10 +154,10 @@ export async function PATCH(request: Request) {
     }
 
     if (title !== undefined) {
-      updateData.title = sanitizedTitle
+      updateData.title = sanitisedTitle
     }
     if (description !== undefined) {
-      updateData.description = sanitizedDescription
+      updateData.description = sanitisedDescription
     }
     if (column_id !== undefined) {
       updateData.column_id = column_id

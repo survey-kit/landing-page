@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { CardMorphDialog } from "@/components/card-morph-dialog"
 
 interface KanbanCardComponentProps {
   card: KanbanCard
@@ -106,48 +107,78 @@ export function KanbanCardComponent({
     }
   }
 
+  const [hasDragged, setHasDragged] = useState(false)
+
+  // Track if we're dragging to prevent dialog from opening
+  useEffect(() => {
+    if (isDragging) {
+      setHasDragged(true)
+    } else {
+      // Reset after a short delay to allow click events to be processed
+      const timer = setTimeout(() => setHasDragged(false), 100)
+      return () => clearTimeout(timer)
+    }
+  }, [isDragging])
+
+  const cardContent = (
+    <Card
+      ref={setNodeRef}
+      style={style}
+      {...(isAdmin ? { ...attributes, ...listeners } : {})}
+      className={`p-4 space-y-2 transition-shadow ${
+        isAdmin
+          ? "cursor-grab active:cursor-grabbing hover:shadow-md"
+          : "cursor-pointer hover:shadow-md"
+      } ${isDragging ? "shadow-lg" : ""} ${isOver && !isDragging ? "ring-2 ring-primary ring-offset-2" : ""}`}
+      onClick={e => {
+        // Prevent dialog from opening if we just dragged
+        if (hasDragged) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
+      }}
+    >
+      <div className="flex items-start justify-between gap-2">
+        <h4 className="font-medium text-sm">{card.title}</h4>
+        {isAdmin && (
+          <div className="flex gap-1" onClick={e => e.stopPropagation()}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6"
+              onClick={e => {
+                e.stopPropagation()
+                setIsEditing(true)
+              }}
+            >
+              <Pencil className="h-3 w-3" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6"
+              onClick={e => {
+                e.stopPropagation()
+                handleDelete()
+              }}
+              disabled={loading}
+            >
+              <Trash2 className="h-3 w-3" />
+            </Button>
+          </div>
+        )}
+      </div>
+      {card.description && (
+        <p className="text-xs text-muted-foreground line-clamp-2">{card.description}</p>
+      )}
+    </Card>
+  )
+
   return (
     <>
-      <Card
-        ref={setNodeRef}
-        style={style}
-        {...(isAdmin ? { ...attributes, ...listeners } : {})}
-        className={`p-4 space-y-2 transition-shadow ${
-          isAdmin ? "cursor-grab active:cursor-grabbing hover:shadow-md" : "cursor-default"
-        } ${isDragging ? "shadow-lg" : ""} ${isOver && !isDragging ? "ring-2 ring-primary ring-offset-2" : ""}`}
-      >
-        <div className="flex items-start justify-between gap-2">
-          <h4 className="font-medium text-sm">{card.title}</h4>
-          {isAdmin && (
-            <div className="flex gap-1" onClick={e => e.stopPropagation()}>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6"
-                onClick={e => {
-                  e.stopPropagation()
-                  setIsEditing(true)
-                }}
-              >
-                <Pencil className="h-3 w-3" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6"
-                onClick={e => {
-                  e.stopPropagation()
-                  handleDelete()
-                }}
-                disabled={loading}
-              >
-                <Trash2 className="h-3 w-3" />
-              </Button>
-            </div>
-          )}
-        </div>
-        {card.description && <p className="text-xs text-muted-foreground">{card.description}</p>}
-      </Card>
+      <CardMorphDialog card={card} disabled={isDragging || hasDragged}>
+        {cardContent}
+      </CardMorphDialog>
 
       <Dialog open={isEditing} onOpenChange={setIsEditing}>
         <DialogContent>

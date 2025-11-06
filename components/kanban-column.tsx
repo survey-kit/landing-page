@@ -70,7 +70,7 @@ export function KanbanColumnComponent({
 
       <div
         ref={setNodeRef}
-        className={`space-y-3 min-h-[200px] p-4 rounded-lg border bg-muted/20 transition-colors ${
+        className={`flex flex-col gap-2 min-h-[200px] p-0 rounded-lg transition-colors ${
           isOver ? "bg-muted/40 border-primary/50" : ""
         }`}
       >

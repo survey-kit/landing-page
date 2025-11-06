@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     "survey components",
     "validation",
     "extensible",
-    "documentation"
+    "documentation",
   ],
   openGraph: {
     title: "Survey Kit – Mobile-First Accessible Survey Framework for Developers",
@@ -39,18 +39,18 @@ export const metadata: Metadata = {
         url: "/logo.png",
         width: 120,
         height: 120,
-        alt: "Survey Kit – Mobile-First Accessible Survey Framework"
-      }
-    ]
+        alt: "Survey Kit – Mobile-First Accessible Survey Framework",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Survey Kit – Mobile-First Accessible Survey Framework for Developers",
     description:
       "Conversational, accessible surveys for mobile and desktop. One question per page, WCAG compliant, developer-friendly, and fully customisable.",
-    images: ["/logo.png"]
+    images: ["/logo.png"],
   },
-  metadataBase: new URL("https://survey-kit.com")
+  metadataBase: new URL("https://survey-kit.com"),
 }
 
 export default function RootLayout({

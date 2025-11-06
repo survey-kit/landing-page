@@ -42,20 +42,18 @@ export default async function Home() {
       <div className="container mx-auto px-4 md:px-0 py-16 md:py-0 flex flex-col justify-center">
         <div className="max-w-3xl mx-auto text-center sm:text-left space-y-12">
           {/* Logo and Title */}
-          <div className="space-y-6">
-            <div className="flex justify-center sm:justify-start">
-              <Image
-                src="/logo.png"
-                alt="Survey Kit Logo"
-                width={120}
-                height={120}
-                className="w-24 h-24 md:w-32 md:h-32"
-                priority
-              />
-            </div>
-            <div className="space-y-3">
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-balance ">
+          <div className="mt-4 sm:mt-16">
+            <div className="flex flex-col justify-center">
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-balance flex sm:flex-row flex-col-reverse items-center justify-center sm:justify-start mb-4 sm:mb-0">
                 Survey Kit
+                <Image
+                  src="/logo.png"
+                  alt="Survey Kit Logo"
+                  width={120}
+                  height={120}
+                  className="w-32 h-32 md:w-16 md:h-16"
+                  priority
+                />
               </h1>
               {/* Slogan aligned left */}
               <div className="">

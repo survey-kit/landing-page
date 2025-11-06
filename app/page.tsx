@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Github } from "lucide-react"
+import { ExternalLink, Github } from "lucide-react"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
 import { KanbanBoard } from "@/components/kanban-board"
 import { LoginDialog } from "@/components/login-dialog"
@@ -39,7 +39,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-background">
       {/* Align text and features to the left */}
-      <div className="container mx-auto px-4 md:px-0 py-16 md:py-0 flex flex-col justify-center">
+      <div className="container mx-auto px-4 md:px-0 py-8 md:py-0 flex flex-col justify-center">
         <div className="max-w-3xl mx-auto text-center sm:text-left space-y-12">
           {/* Logo and Title */}
           <div className="mt-4 sm:mt-16">
@@ -89,27 +89,27 @@ export default async function Home() {
               description="Customisable components and validation with comprehensive documentation"
             />
           </div>
-          <div className="flex sm:flex-row gap-4 justify-center md:justify-start items-start pt-16">
+          <div className="flex sm:flex-row gap-4 justify-center md:justify-start items-start pt-8">
             <Button size="lg" asChild>
               <a
                 href="https://github.com/survey-kit"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="gap-2"
+                className="gap-2 w-full sm:w-auto"
               >
                 <Github className="w-5 h-5" />
                 View on GitHub
-                <ArrowRight className="w-4 h-4" />
+                <ExternalLink className="w-4 h-4" />
               </a>
             </Button>
           </div>
         </div>
       </div>
-      <div className="w-full flex justify-center py-12">
+      <div className="w-full flex justify-center py-0 sm:py-12">
         <div className="border-t border-muted-foreground/20 w-full max-w-3xl" />
       </div>
       {/* Align kanban content to left */}
-      <div className="container mx-auto px-4 md:px-0 py-16 md:py-0 flex flex-col justify-center">
+      <div className="container mx-auto px-4 md:px-0 py-8 md:py-0 flex flex-col justify-center">
         <div className="space-y-8">
           <div className="flex-col sm:flex-row sm:items-center sm:justify-between mx-auto max-w-3xl ">
             <div className="w-full flex items-center justify-between">

@@ -56,9 +56,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/logo.png",
-        width: 120,
-        height: 120,
+        url: "/opengraph.png",
+        width: 1200,
+        height: 630,
         alt: "Survey Kit – Mobile-First Accessible Survey Framework",
       },
     ],
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     title: "Survey Kit – Mobile-First Accessible Survey Framework for Developers",
     description:
       "Conversational, accessible surveys for mobile and desktop. One question per page, WCAG compliant, developer-friendly, and fully customisable.",
-    images: ["/logo.png"],
+    images: ["/opengraph.png"],
   },
   metadataBase: new URL("https://survey-kit.com"),
 }

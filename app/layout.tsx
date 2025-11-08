@@ -57,8 +57,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/opengraph.png",
-        width: 1200,
-        height: 630,
+        width: 3600,
+        height: 1890,
         alt: "Survey Kit – Mobile-First Accessible Survey Framework",
       },
     ],

@@ -72,7 +72,7 @@ export function LoginDialog({ user }: LoginDialogProps) {
         <DialogHeader>
           <DialogTitle>Login with GitHub</DialogTitle>
           <DialogDescription>
-            Login to manage the kanban board. Only @sebtheo can make changes.
+            Login to manage the kanban board. Only <strong>@sebtheo</strong> can make changes.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">

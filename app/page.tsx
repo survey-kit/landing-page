@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Github } from "lucide-react"
+import { ExternalLink, Github, FileText } from "lucide-react"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
 import { KanbanBoard } from "@/components/kanban-board"
 import { LoginDialog } from "@/components/login-dialog"
@@ -89,8 +89,8 @@ export default async function Home() {
               description="Customisable components and validation with comprehensive documentation"
             />
           </div>
-          <div className="flex sm:flex-row gap-4 justify-center md:justify-start items-start pt-8">
-            <Button size="lg" asChild>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-between items-start pt-8">
+            <Button size="lg" asChild className="w-full sm:w-auto">
               <a
                 href="https://github.com/survey-kit"
                 target="_blank"
@@ -99,6 +99,18 @@ export default async function Home() {
               >
                 <Github className="w-5 h-5" />
                 View on GitHub
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </Button>
+            <Button variant="secondary" size="lg" asChild className="w-full sm:w-auto">
+              <a
+                href="https://template.survey-kit.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="gap-2 w-full sm:w-auto"
+              >
+                <FileText className="w-5 h-5" />
+                View Template
                 <ExternalLink className="w-4 h-4" />
               </a>
             </Button>

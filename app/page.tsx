@@ -125,7 +125,9 @@ export default async function Home() {
         <div className="space-y-8">
           <div className="flex-col sm:flex-row sm:items-center sm:justify-between mx-auto max-w-3xl ">
             <div className="w-full flex items-center justify-between">
-              <h2 className="text-3xl font-bold ">Project Board</h2>
+              <h2 className="text-3xl font-bold" id="board">
+                Project Board
+              </h2>
               <div className="ml-auto">
                 <LoginDialog
                   user={

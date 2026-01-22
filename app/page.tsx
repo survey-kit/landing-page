@@ -81,7 +81,7 @@ export default async function Home() {
               <div className="hidden h-8 w-[0.5px] bg-zinc-200 sm:flex dark:bg-zinc-800"></div>
               <nav className="flex items-center space-x-2">
                 <a
-                  href="https://github.com/ibelick/motion-primitives"
+                  href="https://github.com/survey-kit/survey-kit"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex h-9 w-9 items-center justify-center"

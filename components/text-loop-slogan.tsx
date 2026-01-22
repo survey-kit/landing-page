@@ -2,7 +2,7 @@ import { TextLoop } from "@/components/ui/text-loop"
 
 export function TextLoopSlogan() {
   return (
-    <div className="text-2xl md:text-2xl text-muted-foreground text-balance">
+    <div className="text-2xl mx-auto md:text-4xl text-foreground text-balance text-center flex flex-col items-center">
       <span className="inline-block">A survey framework for</span>
       <span className="block md:inline-block md:ml-2">
         <TextLoop

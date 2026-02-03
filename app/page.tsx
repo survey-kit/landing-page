@@ -143,7 +143,7 @@ export default async function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-between items-start pt-8">
               <Button size="lg" asChild className="w-full sm:w-auto">
                 <a
-                  href="https://github.com/survey-kit"
+                  href="https://github.com/survey-kit/survey-kit"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="gap-2 w-full sm:w-auto"

@@ -131,7 +131,7 @@ export default async function Home() {
               />
               <TiltCard
                 title="Developer Friendly"
-                description="Built with React and TypeScript, configured with JSON or YAML"
+                description="Built with React and TypeScript, configured with JSON"
               />
               <TiltCard
                 title="Flexible & Extensible"

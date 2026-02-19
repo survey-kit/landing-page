@@ -27,7 +27,7 @@ const _sourceSerif_4 = V0_Font_Source_Serif_4({
 export const metadata: Metadata = {
   title: "Survey Kit – Mobile-First Accessible Survey Framework for Developers",
   description:
-    "Survey Kit is a modern, mobile-first survey framework with a conversational UI. Each question appears one-per-page for an optimal mobile experience. Fully accessible (WCAG 2.2 AA), keyboard navigable, and screen reader friendly. Built with React and TypeScript, easily configurable using JSON or YAML. Flexible, extensible components and validation, plus comprehensive documentation for developers.",
+    "Survey Kit is a modern, mobile-first survey framework with a conversational UI. Each question appears one-per-page for an optimal mobile experience. Fully accessible (WCAG 2.2 AA), keyboard navigable, and screen reader friendly. Built with React and TypeScript, easily configurable using JSON. Flexible, extensible components and validation, plus comprehensive documentation for developers.",
   keywords: [
     "Survey Kit",
     "survey framework",
@@ -40,7 +40,6 @@ export const metadata: Metadata = {
     "React",
     "TypeScript",
     "JSON",
-    "YAML",
     "developer friendly",
     "customisable survey",
     "survey components",

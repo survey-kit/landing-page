@@ -41,7 +41,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-background">
-      <FadeIn className="sticky top-0 z-10 bg-white dark:border-white/10 dark:bg-zinc-950">
+      <FadeIn className="sticky top-0 z-50 bg-white/80 backdrop-blur-md dark:bg-zinc-950/80">
         <header className="px-6 py-5 lg:flex lg:h-16 lg:items-center lg:px-8 lg:py-0">
           <div className="mx-auto flex w-full items-center justify-between md:max-w-7xl">
             <a href="/" className="relative flex items-center space-x-2">

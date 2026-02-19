@@ -54,7 +54,7 @@ export default async function Home() {
             <div className="flex items-center space-x-6">
               <nav className="hidden items-center space-x-6 sm:flex">
                 <a
-                  href="https://survey-kit.github.io/survey-kit/"
+                  href="https://docs.survey-kit.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hidden items-center text-sm font-medium text-zinc-700 hover:text-zinc-950 md:inline-flex dark:text-zinc-300 dark:hover:text-white"

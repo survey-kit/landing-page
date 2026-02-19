@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Github, FileText } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
 import { KanbanBoard } from "@/components/kanban-board"
 import { LoginDialog } from "@/components/login-dialog"
@@ -45,7 +46,11 @@ export default async function Home() {
         <header className="px-6 py-5 lg:flex lg:h-16 lg:items-center lg:px-8 lg:py-0">
           <div className="mx-auto flex w-full items-center justify-between md:max-w-7xl">
             <a href="/" className="relative flex items-center space-x-2">
-              <img src="/logo.png" alt="Survey Kit Logo" className="h-4" />
+              <img
+                src="/logo.png"
+                alt="Survey Kit Logo"
+                className="h-6 bg-white p-1 rounded-[2px]"
+              />
               <div className="text-md font-medium text-zinc-950 dark:text-white">SurveyKit</div>
               <span className="mb-4 ml-0 rounded-sm bg-zinc-800 px-1.5 py-0.5 text-[10px] font-medium text-zinc-50 select-none">
                 beta
@@ -80,6 +85,7 @@ export default async function Home() {
               </nav>
               <div className="hidden h-8 w-[0.5px] bg-zinc-200 sm:flex dark:bg-zinc-800"></div>
               <nav className="flex items-center space-x-2">
+                <ThemeToggle />
                 <a
                   href="https://github.com/survey-kit/survey-kit"
                   target="_blank"

@@ -2,7 +2,7 @@ import { Tilt } from "@/components/ui/tilt"
 
 export function TiltCard({ title, description }: { title: string; description: string }) {
   return (
-    <Tilt rotationFactor={8} isRevese>
+    <Tilt rotationFactor={16} isRevese>
       <div
         className="flex flex-col overflow-hidden border border-zinc-950/20
         dark:border-zinc-50/10 dark:bg-zinc-900

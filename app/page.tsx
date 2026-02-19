@@ -113,7 +113,7 @@ export default async function Home() {
             <div className="space-y-6 w-full">
               <p className="text-sm sm:text-lg mx-auto text-muted-foreground leading-relaxed text-pretty max-w-md sm:max-w-lg text-center">
                 A conversational survey experience designed for mobile devices. One question per
-                page, fully accessible, and built for developers.
+                page, fully accessible and built for developers.
               </p>
             </div>
           </FadeIn>

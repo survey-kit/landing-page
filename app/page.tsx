@@ -1,3 +1,6 @@
+import Link from "next/link"
+import Image from "next/image"
+
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Github, FileText } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -55,17 +58,20 @@ export default async function Home() {
       >
         <header className="px-6 py-5 lg:flex lg:h-16 lg:items-center lg:px-8 lg:py-0">
           <div className="mx-auto flex w-full items-center justify-between md:max-w-7xl">
-            <a href="/" className="relative flex items-center space-x-2">
-              <img
+            <Link href="/" className="relative flex items-center space-x-2">
+              <Image
                 src="/logo.png"
-                alt="Survey Kit Logo"
-                className="h-6 bg-white p-1 rounded-[2px]"
+                alt="Survey Kit"
+                width={28}
+                height={24}
+                className="h-6 w-auto bg-white p-1 rounded-[2px]"
+                priority
               />
               <div className="text-md font-medium text-zinc-950 dark:text-white">SurveyKit</div>
               <span className="mb-4 ml-0 rounded-sm bg-zinc-800 px-1.5 py-0.5 text-[10px] font-medium text-zinc-50 select-none">
                 beta
               </span>
-            </a>
+            </Link>
             <div className="flex items-center space-x-6">
               <nav className="hidden items-center space-x-6 sm:flex">
                 <a
@@ -111,15 +117,15 @@ export default async function Home() {
       </FadeIn>
       {/* Align text and features to the left */}
       <div className="container mx-auto px-4 md:px-0 py-8 md:py-0 flex flex-col justify-center">
-        <div className="max-w-3xl mx-auto text-center sm:text-left space-y-12">
+        <section
+          className="max-w-3xl mx-auto text-center sm:text-left space-y-12"
+          aria-labelledby="hero-heading"
+        >
           {/* Logo and Title */}
           <FadeIn delay={0.1}>
             <div className="pt-4 sm:pt-20 mb-4">
               <div className="flex flex-col justify-center">
-                {/* Slogan aligned left */}
-                <div className="">
-                  <TextLoopSlogan />
-                </div>
+                <TextLoopSlogan />
               </div>
             </div>
           </FadeIn>
@@ -127,7 +133,7 @@ export default async function Home() {
           {/* Description */}
           <FadeIn delay={0.2}>
             <div className="space-y-6 w-full">
-              <p className="text-sm sm:text-lg mx-auto text-muted-foreground leading-relaxed text-pretty max-w-md sm:max-w-lg text-center">
+              <p className="text-sm sm:text-lg mx-auto text-muted-foreground leading-relaxed text-pretty max-w-md sm:max-w-lg text-center sm:text-left">
                 A conversational survey experience designed for mobile devices. One question per
                 page, fully accessible and built for developers.
               </p>
@@ -136,7 +142,7 @@ export default async function Home() {
 
           {/* Features */}
           <FadeIn delay={0.3}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto  my-0 ">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto my-0">
               <TiltCard
                 title="Mobile-First Design"
                 description="Conversational UI with one question per page for optimal mobile experience"
@@ -183,15 +189,17 @@ export default async function Home() {
               </Button>
             </div>
           </FadeIn>
-        </div>
+        </section>
       </div>
       <FadeIn delay={0.5}>
         <div className="w-full flex justify-center py-0 sm:py-12">
           <div className="border-t border-muted-foreground/20 w-full max-w-3xl" />
         </div>
       </FadeIn>
-      {/* Align kanban content to left */}
-      <div className="container mx-auto px-4 md:px-0 py-8 md:py-0 flex flex-col justify-center">
+      <section
+        className="container mx-auto px-4 md:px-0 py-8 md:py-0 flex flex-col justify-center"
+        aria-labelledby="board"
+      >
         <div className="space-y-8">
           <FadeIn delay={0.6}>
             <div className="flex-col sm:flex-row sm:items-center sm:justify-between mx-auto max-w-3xl ">
@@ -229,10 +237,9 @@ export default async function Home() {
             </div>
           </FadeIn>
         </div>
-      </div>
+      </section>
       <FadeIn delay={0.8}>
-        <div className="flex justify-center p-12">
-          {/* Footer */}
+        <footer className="flex justify-center p-12">
           <div className="text-sm text-foreground text-center">
             <p>
               Made by{" "}
@@ -256,7 +263,7 @@ export default async function Home() {
               .
             </p>
           </div>
-        </div>
+        </footer>
       </FadeIn>
     </main>
   )

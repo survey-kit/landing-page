@@ -1,8 +1,17 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
+import { StructuredData } from "@/components/structured-data"
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_OG_DESCRIPTION,
+  SITE_TAGLINE,
+  SITE_URL,
+  TWITTER_HANDLE,
+} from "@/lib/site"
 import "./globals.css"
 
 import {
@@ -25,52 +34,88 @@ const _sourceSerif_4 = V0_Font_Source_Serif_4({
   weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
 })
 
+const defaultTitle = `${SITE_NAME} – ${SITE_TAGLINE}`
+
 export const metadata: Metadata = {
-  title: "Survey Kit – Mobile-First Accessible Survey Framework for Developers",
-  description:
-    "Survey Kit is a modern, mobile-first survey framework with a conversational UI. Each question appears one-per-page for an optimal mobile experience. Fully accessible (WCAG 2.2 AA), keyboard navigable, and screen reader friendly. Built with React and TypeScript, easily configurable using JSON. Flexible, extensible components and validation, plus comprehensive documentation for developers.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: defaultTitle,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: "@sebtheo", url: "https://github.com/sebtheo" }],
+  creator: "@sebtheo",
+  publisher: SITE_NAME,
+  category: "technology",
   keywords: [
     "Survey Kit",
     "survey framework",
     "mobile survey",
     "conversational survey",
     "accessible survey",
-    "WCAG 2.2 AA",
+    "WCAG 2.2",
     "keyboard navigation",
     "screen reader",
     "React",
     "TypeScript",
-    "JSON",
-    "developer friendly",
-    "customisable survey",
+    "JSON configuration",
+    "developer tools",
     "survey components",
-    "validation",
-    "extensible",
-    "documentation",
+    "form validation",
+    "open source",
   ],
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
-    title: "Survey Kit – Mobile-First Accessible Survey Framework for Developers",
-    description:
-      "A conversational, accessible survey experience with mobile-first design, WCAG 2.2 AA compliance, and developer-first flexibility.",
-    url: "https://survey-kit.com",
+    title: defaultTitle,
+    description: SITE_OG_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    locale: "en_GB",
     type: "website",
     images: [
       {
         url: "/opengraph.png",
         width: 3600,
         height: 1890,
-        alt: "Survey Kit – Mobile-First Accessible Survey Framework",
+        alt: `${SITE_NAME} – ${SITE_TAGLINE}`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Survey Kit – Mobile-First Accessible Survey Framework for Developers",
+    title: defaultTitle,
     description:
       "Conversational, accessible surveys for mobile and desktop. One question per page, WCAG compliant, developer-friendly, and fully customisable.",
     images: ["/opengraph.png"],
+    creator: TWITTER_HANDLE,
   },
-  metadataBase: new URL("https://survey-kit.com"),
+  icons: {
+    icon: [{ url: "/logo.png", type: "image/png" }],
+    apple: [{ url: "/logo.png", type: "image/png" }],
+  },
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#1e293b" },
+  ],
 }
 
 export default function RootLayout({
@@ -79,15 +124,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en-GB" suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#1e293b" />
-        <meta name="apple-mobile-web-app-title" content="Survey Kit" />
+        <StructuredData />
+        <meta name="apple-mobile-web-app-title" content={SITE_NAME} />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="application-name" content="Survey Kit" />
-        <meta name="author" content="@sebtheo" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="format-detection" content="telephone=no" />
       </head>
       <body className="font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

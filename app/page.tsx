@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Github, FileText } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -10,6 +9,7 @@ import { TextLoopSlogan } from "@/components/text-loop-slogan"
 import { TiltCard } from "@/components/tilt-card"
 
 import { FadeIn } from "@/components/fade-in"
+import { Banner } from "@/components/banner"
 
 export default async function Home() {
   const supabase = await getSupabaseServerClient()
@@ -42,7 +42,17 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-background">
-      <FadeIn className="sticky top-0 z-50 bg-white/80 backdrop-blur-md dark:bg-zinc-950/80">
+      <Banner>
+        This is an <strong>unofficial</strong> collaboration with the{" "}
+        <a href="https://www.ons.gov.uk" target="_blank" rel="noopener noreferrer">
+          ONS
+        </a>
+        .
+      </Banner>
+      <FadeIn
+        delay={0.2}
+        className="sticky top-0 z-50 bg-white/80 backdrop-blur-md dark:bg-zinc-950/80"
+      >
         <header className="px-6 py-5 lg:flex lg:h-16 lg:items-center lg:px-8 lg:py-0">
           <div className="mx-auto flex w-full items-center justify-between md:max-w-7xl">
             <a href="/" className="relative flex items-center space-x-2">
@@ -68,19 +78,19 @@ export default async function Home() {
                 </a>
                 <a
                   className="text-sm font-medium text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
-                  href="https://template.survey-kit.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Demo
-                </a>
-                <a
-                  className="text-sm font-medium text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
                   href="https://aws-template.survey-kit.com"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Template
+                  AWS Demo
+                </a>
+                <a
+                  className="text-sm font-medium text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+                  href="https://template.survey-kit.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Vercel Demo
                 </a>
               </nav>
               <div className="hidden h-8 w-[0.5px] bg-zinc-200 sm:flex dark:bg-zinc-800"></div>

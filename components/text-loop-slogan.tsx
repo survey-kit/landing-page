@@ -25,7 +25,7 @@ export function TextLoopSlogan() {
           }}
         >
           <span>mobile</span>
-          <span>accessiblity</span>
+          <span>accessibility</span>
           <span>developers</span>
           <span>flexibility</span>
           <span>extensibility</span>

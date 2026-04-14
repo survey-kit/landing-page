@@ -13,6 +13,7 @@ import { TiltCard } from "@/components/tilt-card"
 
 import { FadeIn } from "@/components/fade-in"
 import { Banner } from "@/components/banner"
+import { SurveyDemoWindow } from "@/components/survey-demo-window"
 
 export default async function Home() {
   const supabase = await getSupabaseServerClient()
@@ -133,7 +134,7 @@ export default async function Home() {
           {/* Description */}
           <FadeIn delay={0.2}>
             <div className="space-y-6 w-full">
-              <p className="text-sm sm:text-lg mx-auto text-muted-foreground leading-relaxed text-pretty max-w-md sm:max-w-lg text-center sm:text-left">
+              <p className="text-sm sm:text-lg mx-auto text-muted-foreground leading-relaxed text-pretty max-w-md sm:max-w-lg text-center">
                 A conversational survey experience designed for mobile devices. One question per
                 page, fully accessible and built for developers.
               </p>
@@ -196,6 +197,35 @@ export default async function Home() {
           <div className="border-t border-muted-foreground/20 w-full max-w-3xl" />
         </div>
       </FadeIn>
+
+      <section
+        className="container mx-auto px-0 md:px-0 py-10 md:py-0 flex flex-col justify-center"
+        aria-labelledby="demo-heading"
+      >
+        <div className="mx-auto w-full max-w-3xl space-y-8">
+          <FadeIn delay={0.52}>
+            <div className="mx-auto max-w-3xl text-center sm:text-left">
+              <h2 className="text-3xl font-bold" id="demo-heading">
+                Live demo
+              </h2>
+              <p className="mt-2 text-muted-foreground">
+                Explore the form survey and the conversational chat flow with the Survey Kit
+                template.
+              </p>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.54}>
+            <SurveyDemoWindow />
+          </FadeIn>
+        </div>
+      </section>
+
+      <FadeIn delay={0.5}>
+        <div className="w-full flex justify-center py-0 sm:py-12">
+          <div className="border-t border-muted-foreground/20 w-full max-w-3xl" />
+        </div>
+      </FadeIn>
+
       <section
         className="container mx-auto px-4 md:px-0 py-8 md:py-0 flex flex-col justify-center"
         aria-labelledby="board"

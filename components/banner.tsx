@@ -26,7 +26,7 @@ export function Banner({ children, className }: BannerProps) {
         role="region"
         aria-label="Site notice"
         className={cn(
-          "relative z-[60] flex w-full items-center justify-center gap-3 border-b border-amber-200/80 bg-amber-50 px-4 py-2.5 text-center text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-100",
+          "relative z-[49] flex w-full items-center justify-center gap-3 border-b border-amber-200/80 bg-amber-50 px-4 py-2.5 text-center text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-100",
           className
         )}
       >

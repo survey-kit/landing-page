@@ -14,6 +14,7 @@ import { TiltCard } from "@/components/tilt-card"
 import { FadeIn } from "@/components/fade-in"
 import { Banner } from "@/components/banner"
 import { SurveyDemoWindow } from "@/components/survey-demo-window"
+import { GuessWhatBubble } from "@/components/guess-what-bubble"
 
 export default async function Home() {
   const supabase = await getSupabaseServerClient()
@@ -69,9 +70,6 @@ export default async function Home() {
                 priority
               />
               <div className="text-md font-medium text-zinc-950 dark:text-white">SurveyKit</div>
-              <span className="mb-4 ml-0 rounded-sm bg-zinc-800 px-1.5 py-0.5 text-[10px] font-medium text-zinc-50 select-none">
-                beta
-              </span>
             </Link>
             <div className="flex items-center space-x-6">
               <nav className="hidden items-center space-x-6 sm:flex">
@@ -295,6 +293,7 @@ export default async function Home() {
           </div>
         </footer>
       </FadeIn>
+      <GuessWhatBubble />
     </main>
   )
 }
